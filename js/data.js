@@ -19,6 +19,12 @@ var data = {
 			type:"word"
 		},
 		{
+			id:801,
+			pid:1,
+			title:"LMD",
+			type:"PDF"
+		},
+		{
 			id:600,
 			pid:0,
 			title:"我的网站项目",
@@ -67,10 +73,16 @@ var data = {
 			type:"file"
 		},
 		{
-			id:8000,
+			id:400,
 			pid:3000,
 			title:"常用js",
 			type:"file"
+		},
+		{
+			id:4001,
+			pid:400,
+			title:"common",
+			type:"txt"
 		},
 		{
 			id:984744,
@@ -79,10 +91,16 @@ var data = {
 			type:"file"
 		},
 		{
-			id:920485,
+			id:500,
 			pid:3000,
 			title:"常用img",
 			type:"file"
+		},
+		{
+			id:5001,
+			pid:500,
+			title:"icon1",
+			type:"img"
 		}
 	]
 }

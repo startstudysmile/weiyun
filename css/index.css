@@ -639,7 +639,16 @@
 	background-position: 0px 2px;
 }
 .file-img i.word{
-	background-position: 0px -110px;
+	background-position: 0px -112px;
+}
+.file-img i.PDF{
+	background-position: 0px -224px;
+}
+.file-img i.img{
+	background-position: 0px -336px;
+}
+.file-img i.txt{
+	background-position: -115px -224px;
 }
 
 
