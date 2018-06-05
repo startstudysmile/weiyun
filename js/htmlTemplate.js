@@ -4,7 +4,7 @@ function fileConstruct(fileData){
 			<div class="item" data-file-id="${fileData.id}">
                 <lable class="checkbox"></lable>
                 <div class="file-img">
-                    <i></i>
+                    <i class="${fileData.type}"></i>
                 </div>
                 <p class="file-title-box">
                     <span class="file-title">${fileData.title}</span>
@@ -49,14 +49,16 @@ function createFileElement(fileData){
 
 //准备树形菜单的html结构
 function treeHtml(data,treeId){
-	var childs = dataControl.getChildById(data,treeId);
+	var data1 = data.filter(function (e) { return e.type == "file"; }); 
+//	console.log(data1)
+	var childs = dataControl.getChildById(data1,treeId);
 	var html = "<ul>";
 	childs.forEach(function (item){
 		//获取到当前数据的层级 通过id获取
-		var level = dataControl.getLevelById(data,item.id);
+		var level = dataControl.getLevelById(data1,item.id);
 		/*tree-nav tree-contro*/
 		//判断当前这个数据有没有子数据 通过id判断
-		var hasChild = dataControl.hasChilds(data,item.id);
+		var hasChild = dataControl.hasChilds(data1,item.id);
 		var classNames = hasChild ? "tree-contro" : "tree-contro-none";
 		//函数递归调用
 		html += `
@@ -67,7 +69,7 @@ function treeHtml(data,treeId){
                         <i class="ico"></i>
                     </span>
                 </div>
-                ${treeHtml(data,item.id)}
+                ${treeHtml(data1,item.id)}
             </li>
 		`	
 	})
@@ -102,8 +104,10 @@ function positionTreeById( positionId ){
 
 //通过id得到当前这个id所有的父数据，得到一个结构
 function createPathNavHtml(datas,fileId){
+	var data1 = datas.filter(function (e) { return e.type == "file"; }); 
+	//	console.log(data1)
 	//找到指定id所有的父数据
-	var parents = dataControl.getParents(datas,fileId).reverse(); 
+	var parents = dataControl.getParents(data1,fileId).reverse(); 
 	var pathNavHtml = '';
 	var len = parents.length;
 
