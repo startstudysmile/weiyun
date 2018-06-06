@@ -30,7 +30,7 @@
 	fileList.innerHTML = createFilesHtml(datas,0);
 
 	//利用事件委托，点击每一个文件夹
-	tools.addEvent(fileList,"click",function(ev){
+	tools.addEvent(fileList,"dblclick",function(ev){
 		var target = ev.target;
 		if( tools.parents(target,".item") ){
 			target = tools.parents(target,".item");
@@ -320,7 +320,7 @@
 	function tipsFn(cls,title){
 
 		//每次调用的时候，都要从-32px开始向0的位置运动
-
+		tipText.innerHTML=title;
 		fullTipBox.style.top = "-32px";
 		fullTipBox.style.transition = "none";
 
@@ -329,6 +329,7 @@
 			fullTipBox.style.top = 0;
 			fullTipBox.style.transition = ".3s";
 			tools.addClass(fullTipBox,cls);
+
 		},0)
 		clearInterval(fullTipBox.timer);
 		fullTipBox.timer = setTimeout(function (){
@@ -425,6 +426,58 @@
 		tools.removeEvent(document,"mouseup",upFn);	
 		if(newDiv) newDiv.style.display = "none";
 	}
+	
+	
+	//重命名功能
+	/*
+	 
+	 * 
+	 * */
+	var rename = tools.$(".rename")[0];
+	tools.addEvent(rename,"mouseup",function(){
+		if(whoSelect().length==0){
+			tipsFn("warn","请选择文件");
+		}else if(whoSelect().length>1){
+			tipsFn("err","只能对单个文件进行重命名");
+		}else{
+			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
+			var fileEdtor=tools.$(".file-edtor",whoSelect()[0])[0];
+			var edtor=tools.$(".edtor",whoSelect()[0])[0];
+			var value = edtor.value.trim();
+			fileEdtor.style.display = "block";
+			fileTitle.style.display = "none";
+			edtor.select();  //自动获取光标
+			fileTitle.innerHTML=value;
+		}
+		rename.isRenameFile = true; 
+	})
+	tools.addEvent(document,"mousedown",function(){
+		if(rename.isRenameFile){
+			console.log(rename.isRenameFile)
+			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
+			var fileEdtor=tools.$(".file-edtor",whoSelect()[0])[0];
+			var edtor=tools.$(".edtor",whoSelect()[0])[0];
+			var value = edtor.value.trim();
+			fileTitle.innerHTML=value;
+			fileEdtor.style.display = "none";
+			fileTitle.style.display = "block";
+			rename.isRenameFile = false;
+			if(rename.isRenameFile ==false){
+				var checkBox=tools.$(".checkbox",whoSelect()[0])[0];
+				var fileItem=whoSelect()[0];
+				console.log(fileItem)
+				tools.removeClass(fileItem,"file-checked");
+				
+				tools.removeClass(checkBox,"checked");
+
+			}
+
+		}
+		
+
+			
+		
+	})
 	
 
 }())

@@ -1021,6 +1021,52 @@ content-menu li {
     opacity: .5;
 }
 
+.fr{float: right;}
+.model{padding-right: 20px;}
+/*详细列表样式*/
+.detail-list{padding: 4px 0 0 4px;display: none;}
+.detail-list .files{position:relative; height: 40px;width: 100%;background: #FFF;line-height: 40px;border-bottom: 1px solid #e1e8ed;padding: 0 15px;font-size: 14px;overflow: hidden;}
+.detail-list .files:hover{background: #f5f8fa;}
+.detail-list .files .titles {float: left;width: 40%;height: 40px;overflow: hidden;text-align: left;font-size: 0;}
+.detail-list .files .selectBox {display: block;position: absolute;left: 9px;top: 12px;width: 14px;height: 14px;border: 1px solid #d0d9de;}
+.detail-list .icon {
+    display: inline-block;
+    background-image: url(img/file-small.png);
+    background-repeat: no-repeat;
+}
+.detail-list .files .titles .folderIcon {
+    margin: 0;
+    float: left;
+    margin-left: 25px;
+    margin-top: 9px;
+    width: 24px;
+    height: 21px;
+    background-position: 0 0;
+}
+.detail-list .files .titles .txt {top: 5px;margin-left: 10px;display: none;}
+.detail-list .files .tools {float: left;width: 30%;height: 40px;text-align: left;}
+.detail-list .files .tools .icon {
+    width: 20px;
+    height: 20px;
+    margin: 0 20px 0 0;
+    float: none;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    background-image: url(img/ico-message.png);
+    background-repeat: no-repeat;
+}
+
+.detail-list .files .tools .icon.download {
+    background-position: 3px -355px;
+}
+.detail-list .files .tools .icon.share {
+    background-position: 3px -388px;
+}
+.detail-list .files .tools .icon.move {background-position: 3px -452px;}
+.detail-list .files .tools .icon.cancle {background-position: 3px -323px;}
+.detail-list .files .filename{line-height: 40px;font-size: 14px;display: inline-block;float: left;margin-left: 10px;}
+.detail-list .files .timer {float: right;width: 20%;}
 
 
 

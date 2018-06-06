@@ -7,52 +7,7 @@
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" type="text/css" href="src/popup/css/demo.css">
 	<style type="text/css">
-		.fr{float: right;}
-		.model{padding-right: 20px;}
-		/*详细列表样式*/
-		.detail-list{padding: 4px 0 0 4px;display: none;}
-		.detail-list .files{position:relative; height: 40px;width: 100%;background: #FFF;line-height: 40px;border-bottom: 1px solid #e1e8ed;padding: 0 15px;font-size: 14px;overflow: hidden;}
-    	.detail-list .files:hover{background: #f5f8fa;}
-    	.detail-list .files .titles {float: left;width: 40%;height: 40px;overflow: hidden;text-align: left;font-size: 0;}
-		.detail-list .files .selectBox {display: block;position: absolute;left: 9px;top: 12px;width: 14px;height: 14px;border: 1px solid #d0d9de;}
-		.detail-list .icon {
-		    display: inline-block;
-		    background-image: url(img/file-small.png);
-		    background-repeat: no-repeat;
-		}
-		.detail-list .files .titles .folderIcon {
-		    margin: 0;
-		    float: left;
-		    margin-left: 25px;
-		    margin-top: 9px;
-		    width: 24px;
-		    height: 21px;
-		    background-position: 0 0;
-		}
-		.detail-list .files .titles .txt {top: 5px;margin-left: 10px;display: none;}
-		.detail-list .files .tools {float: left;width: 30%;height: 40px;text-align: left;}
-		.detail-list .files .tools .icon {
-		    width: 20px;
-		    height: 20px;
-		    margin: 0 20px 0 0;
-		    float: none;
-		    display: inline-block;
-		    position: relative;
-		    top: 3px;
-		    background-image: url(img/ico-message.png);
-		    background-repeat: no-repeat;
-		}
-	
-		.detail-list .files .tools .icon.download {
-		    background-position: 3px -355px;
-		}
-		.detail-list .files .tools .icon.share {
-		    background-position: 3px -388px;
-		}
-		.detail-list .files .tools .icon.move {background-position: 3px -452px;}
-		.detail-list .files .tools .icon.cancle {background-position: 3px -323px;}
-		.detail-list .files .filename{line-height: 40px;font-size: 14px;display: inline-block;float: left;margin-left: 10px;}
-		.detail-list .files .timer {float: right;width: 20%;}
+		
 	</style>
 </head>
 <body>
@@ -161,7 +116,7 @@
                                 <span>分享</span>
                             </span>
                         </a>
-                        <a href="#" class="nav-a move">
+                        <a href="#" class="nav-a move" id="open">
                             <span>
                                 <i></i>
                                 <span>移动到</span>
@@ -323,7 +278,7 @@
         <span class="full-tip">
             <span class="inner">
                 <i class="ico"></i>
-                <span class="text" data-id="label">新建文件夹成功</span>
+                <span  class="text" data-id="label"></span>
         </span>
         </span>
     </div>
@@ -384,6 +339,21 @@
     <script src="src/popup/js/popup.js"></script>
     <script src="js/htmlTemplate.js"></script>
     <script src="js/index.js"></script>
+    <script type="text/javascript">
+    	var popup = new PopUp();
+		var btn = document.getElementById('open');
+		btn.onclick = function(){
+			popup.open();
+		};
+		popup.onclose = function(){
+			//点击关闭时执行。
+			return false //阻止关闭操作。
+		};
+		popup.onconfirm = function(){
+			//点击确定时执行。
+			//return false 阻止关闭操作。
+		};
+    </script>
 </body>
 
 </html>
