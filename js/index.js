@@ -16,6 +16,7 @@
 
 	//要准备的数据
 	var datas = data.files;
+	var typeData=datas.filter(function (e) { return e.type == "file"; }); 
 
 	//渲染文件区域
 	var renderId = 0;  //默认一上就要渲染这个id下的所有的子数据
@@ -34,9 +35,10 @@
 		if( tools.parents(target,".item") ){
 			target = tools.parents(target,".item");
 			//找到文件的id
+//			console.dir(target);
 			var fileId = target.dataset.fileId;
-
-			renderNavFilesTree(fileId);
+			var fileType = target.dataset.fileType;
+			renderNavFilesTree(fileId,fileType);
 
 		}
 	})
@@ -52,22 +54,24 @@
 		var target = ev.target;
 		if( tools.parents(target,"a") ){
 			var fileId = target.dataset.fileId;
-			console.log( fileId );
-			renderNavFilesTree(fileId);
+			//console.log( fileId );
+			var fileType = target.dataset.fileType;
+//			alert(fileType)
+			renderNavFilesTree(fileId,fileType);
 		}
 
 	})
 
 	var empty = tools.$(".g-empty")[0];  //没有文件提醒的结构
 
-	treeMenu.innerHTML = treeHtml(datas,-1);
+	treeMenu.innerHTML = treeHtml(typeData,-1);
 
 	//var positionId = 0;  //定位到属性菜单的上
 	positionTreeById(0);
 
 	//渲染文件导航
 	//渲染文件导航
-	pathNav.innerHTML = createPathNavHtml(datas,0);
+	pathNav.innerHTML = createPathNavHtml(typeData,0);
 
 	//利用事件委托，点击树形菜单的区域，找到事件源就可以
 
@@ -75,24 +79,23 @@
 		var target = ev.target;
 		if( tools.parents(target,".tree-title") ){
 			target = tools.parents(target,".tree-title");
-
 			//找到div身上的id 
 			//console.dir(target);
-
 			var fileId = target.dataset.fileId;
-			
-			renderNavFilesTree(fileId);
+			var fileType = target.dataset.fileType;
+			renderNavFilesTree(fileId,fileType);
 		}
 	});
 
 	//通过指定的id渲染文件区域，文件导航区域，树形菜单
-	function renderNavFilesTree(fileId){
-		//渲染文件导航
-			pathNav.innerHTML = createPathNavHtml(datas,fileId);
-
+	function renderNavFilesTree(fileId,fileType){
+		if(fileType!="file"){
+			
+		}else{
+			//渲染文件导航
+			pathNav.innerHTML = createPathNavHtml(typeData,fileId);
 			//如果指定的id没有子数据，需要提醒
 			var hasChild =dataControl.hasChilds(datas,fileId);
-
 			if( hasChild ){  //如果有子数据，就渲染出子数据的结构
 				//找到当前这个id下所有的子数据，渲染在文件区域中
 				empty.style.display = "none";
@@ -102,24 +105,18 @@
 				//清空掉fileList里面的内容
 				fileList.innerHTML = "";
 			}
-
 			//需要给点击的div添加上样式，其余的div没有样式
-
 			var treeNav = tools.$(".tree-nav",treeMenu)[0];
-
 			tools.removeClass(treeNav,"tree-nav");
 			positionTreeById(fileId);
-
 			//通过隐藏域记录一下当前操作的父id
 			getPidInput.value = fileId;	
-
-
 			//每次重新再fileList中生成文件，那么需要给这些文件绑定事件
 			tools.each(fileItem,function(item,index){
 				fileHandle(item);
 			})
-
 			tools.removeClass(checkedAll,"checked");
+		}
 	}
 
 

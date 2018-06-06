@@ -1,7 +1,7 @@
 //单个文件的结构
 function fileConstruct(fileData){
 	var str = `
-			<div class="item" data-file-id="${fileData.id}">
+			<div class="item" data-file-id="${fileData.id}" data-file-type="${fileData.type}">
                 <lable class="checkbox"></lable>
                 <div class="file-img">
                     <i class="${fileData.type}"></i>
@@ -49,27 +49,25 @@ function createFileElement(fileData){
 
 //准备树形菜单的html结构
 function treeHtml(data,treeId){
-	var data1 = data.filter(function (e) { return e.type == "file"; }); 
-//	console.log(data1)
-	var childs = dataControl.getChildById(data1,treeId);
+	var childs = dataControl.getChildById(data,treeId);
 	var html = "<ul>";
 	childs.forEach(function (item){
 		//获取到当前数据的层级 通过id获取
-		var level = dataControl.getLevelById(data1,item.id);
+		var level = dataControl.getLevelById(data,item.id);
 		/*tree-nav tree-contro*/
 		//判断当前这个数据有没有子数据 通过id判断
-		var hasChild = dataControl.hasChilds(data1,item.id);
+		var hasChild = dataControl.hasChilds(data,item.id);
 		var classNames = hasChild ? "tree-contro" : "tree-contro-none";
 		//函数递归调用
 		html += `
             <li>
-                <div class="tree-title ${classNames}" data-file-id="${item.id}" style="padding-left:${level*14}px">
+                <div class="tree-title ${classNames}" data-file-id="${item.id}" data-file-type="${item.type}" style="padding-left:${level*14}px">
                     <span>
                         <strong class="ellipsis">${item.title}</strong>
                         <i class="ico"></i>
                     </span>
                 </div>
-                ${treeHtml(data1,item.id)}
+                ${treeHtml(data,item.id)}
             </li>
 		`	
 	})
@@ -80,7 +78,7 @@ function treeHtml(data,treeId){
 function createTreeHtml(options){
 	var newLi = document.createElement("li");
 	newLi.innerHTML = `
-				<div class="tree-title tree-contro-none" data-file-id="${options.id}" style="padding-left:${options.level*14}px">
+				<div class="tree-title tree-contro-none" data-file-id="${options.id}" data-file-type="${options.type}"  style="padding-left:${options.level*14}px">
                     <span>
                         <strong class="ellipsis">${options.title}</strong>
                         <i class="ico"></i>
@@ -95,37 +93,34 @@ function createTreeHtml(options){
 
 
 //通过id定位到树形菜单，添加calss
-function positionTreeById( positionId ){
-		
+function positionTreeById( positionId ){	
 	var ele = document.querySelector(".tree-title[data-file-id='"+positionId+"']");
-
 	tools.addClass(ele,"tree-nav");
 }
 
 //通过id得到当前这个id所有的父数据，得到一个结构
 function createPathNavHtml(datas,fileId){
-	var data1 = datas.filter(function (e) { return e.type == "file"; }); 
-	//	console.log(data1)
 	//找到指定id所有的父数据
-	var parents = dataControl.getParents(data1,fileId).reverse(); 
+	var parents = dataControl.getParents(datas,fileId).reverse(); 
 	var pathNavHtml = '';
 	var len = parents.length;
-
 	parents.forEach(function(item,index){
 		if( index === parents.length-1 ) return;
 		pathNavHtml += `
-				<a href="javascript:;" style="z-index:${len--}" data-file-id="${item.id}">
+				<a href="javascript:;" style="z-index:${len--}" data-file-id="${item.id}" data-file-type="${item.type}">
 					${item.title}
 				</a>
 			`;
 	});
 	//是当前这个一层的导航内容
-	pathNavHtml += `
+	if(len!=0){
+		pathNavHtml += `
 			<span class="current-path" style="z-index:${len--}">
 				${parents[parents.length-1].title}
 			</span>
 		`;
-
+	}
+	
 	return pathNavHtml;
 	
 }
