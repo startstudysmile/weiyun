@@ -674,11 +674,11 @@
 
 }
 
-.file-title-box .file-edtor {
+.file-title-box .file-edit {
     line-height: 17px;
     display: none;
 }
-.edtor {
+.edit {
     width: 95%;
     outline: none;
     border: 1px #3091f2 solid;

@@ -20,7 +20,7 @@ var dataControl = {
 	getLevelById:function (data,id){
 		return dataControl.getParents(data,id).length;
 	},
-	//这个id是否有子元素？？？
+	//这个id是否有子元素
 	hasChilds:function (data,id){
 		return dataControl.getChildById(data,id).length !== 0;
 	},

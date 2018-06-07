@@ -13,22 +13,16 @@
 	}
 	//改变浏览器大小
 	window.onresize = changeHeight;
-
 	//要准备的数据
 	var datas = data.files;
 	var typeData=datas.filter(function (e) { return e.type == "file"; }); 
-
 	//渲染文件区域
 	var renderId = 0;  //默认一上就要渲染这个id下的所有的子数据
-
 	//文件区域的容器
 	var fileList = tools.$(".file-list")[0];  
-
 	var getPidInput = tools.$("#getPidInput");
-
 	//渲染指定id下所有子数据构成的html结构
 	fileList.innerHTML = createFilesHtml(datas,0);
-
 	//利用事件委托，点击每一个文件夹
 	tools.addEvent(fileList,"dblclick",function(ev){
 		var target = ev.target;
@@ -42,39 +36,26 @@
 
 		}
 	})
-
 	//渲染菜单区域
 	var treeMenu = tools.$(".tree-menu")[0];
-
 	var pathNav = tools.$(".path-nav")[0];  //文件导航的容器
-
 	//文件导航区域点击，利用事件委托
-
 	tools.addEvent(pathNav,"click",function (ev){
 		var target = ev.target;
 		if( tools.parents(target,"a") ){
 			var fileId = target.dataset.fileId;
 			//console.log( fileId );
 			var fileType = target.dataset.fileType;
-//			alert(fileType)
 			renderNavFilesTree(fileId,fileType);
 		}
-
 	})
-
 	var empty = tools.$(".g-empty")[0];  //没有文件提醒的结构
-
 	treeMenu.innerHTML = treeHtml(typeData,-1);
-
-	//var positionId = 0;  //定位到属性菜单的上
 	positionTreeById(0);
-
 	//渲染文件导航
 	//渲染文件导航
-	pathNav.innerHTML = createPathNavHtml(typeData,0);
-
+	pathNav.innerHTML = (typeData,0);
 	//利用事件委托，点击树形菜单的区域，找到事件源就可以
-
 	tools.addEvent(treeMenu,"click",function(ev){
 		var target = ev.target;
 		if( tools.parents(target,".tree-title") ){
@@ -84,9 +65,9 @@
 			var fileId = target.dataset.fileId;
 			var fileType = target.dataset.fileType;
 			renderNavFilesTree(fileId,fileType);
+			
 		}
 	});
-
 	//通过指定的id渲染文件区域，文件导航区域，树形菜单
 	function renderNavFilesTree(fileId,fileType){
 		if(fileType!="file"){
@@ -118,35 +99,26 @@
 			tools.removeClass(checkedAll,"checked");
 		}
 	}
-
-
 	//找到文件区域下所有的文件
 	var fileItem = tools.$(".file-item",fileList);
 	var checkboxs = tools.$(".checkbox",fileList);
-
 	tools.each(fileItem,function(item,index){
 		fileHandle(item);
 	})
-
 	//给单独一个文件添加事件处理
 	function fileHandle(item){
-		
 		//给每一个文件绑定鼠标移入移出事件
 		var checkbox = tools.$(".checkbox",item)[0];
-
 		tools.addEvent(item,"mouseenter",function(){
 			tools.addClass(this,"file-checked");
 		});
-
 		tools.addEvent(item,"mouseleave",function(){
 			if( !tools.hasClass(checkbox,"checked") ){
 				tools.removeClass(this,"file-checked");
 			}
-			
 		});
 
 		//给checkbox添加点击处理
-
 		tools.addEvent(checkbox,"click",function(ev){
 			var isaddClass = tools.toggleClass(this,"checked");
 
@@ -167,10 +139,8 @@
 			ev.stopPropagation();
 		})	
 	}
-
 	//获取到全选按钮
 	var checkedAll = tools.$(".checked-all")[0];
-
 	tools.addEvent(checkedAll,"click",function(){
 		/*
 			toggleClass的返回值是一个布尔值
@@ -192,7 +162,6 @@
 			})
 		}
 	});
-
 	//作用：找到所有checkbox勾选的文件
 	function whoSelect(){
 		var arr = [];
@@ -202,40 +171,27 @@
 				arr.push(fileItem[index]);
 			}
 		});
-
 		return arr;	
 	}
-
-
 	//新建文件的功能
 	var create = tools.$(".create")[0];
-
 	tools.addEvent(create,"mouseup",function(){
-
 		//需要把为空的提示给隐藏起来
 		empty.style.display = "none";
-
 		var newElement = createFileElement({
 			title:"",
 			id : new Date().getTime()
 		});
 		fileList.insertBefore(newElement,fileList.firstElementChild);
-
 		//获取标题
 		var fileTitle = tools.$(".file-title",newElement)[0];
 		var fileEdit = tools.$(".file-edit",newElement)[0];
-
 		var edit = tools.$(".edit",newElement)[0];
-
 		fileTitle.style.display = "none";
 		fileEdit.style.display = "block";
-
 		edit.select();  //自动获取光标
-
 		create.isCreateFile = true;  //添加一个状态，表示正在创建文件
-
 	})
-
 	//给document绑定一个mousedown，为了创建文件夹
 	tools.addEvent(document,"mousedown",function(){
 		//判断一下新创建的元素中的输入框是否有内容，如果有内容就创建，没有内容就removeChild
@@ -268,7 +224,7 @@
 					pid:pid,
 					title:value,
 					type:"file"
-				}
+				};
 				//放在数据中
 				datas.unshift(newFileData);
 				//通过pid，找到属性菜单中的div元素
@@ -281,17 +237,80 @@
 					id:fileId,
 					level:level
 				}));
-
 				if( nextElementUl.innerHTML !== "" ){
 					tools.addClass(element,"tree-contro");
 					tools.removeClass(element,"tree-contro-none");
 				}
 				//创建成功提醒
-				tipsFn("ok","新建文件成功");		
+				tipsFn("ok","新建文件成功");
 			}
 			create.isCreateFile = false;  //无论创建成不成功，状态都要设为false
 		}
 	})
+	//重命名功能
+	var rename = tools.$(".rename")[0];
+	tools.addEvent(rename,"mouseup",function(){
+		if(whoSelect().length==0){
+			tipsFn("warn","请选择文件");
+		}else if(whoSelect().length>1){
+			tipsFn("err","只能对单个文件进行重命名");
+		}else{
+			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
+			var fileEdit=tools.$(".file-edit",whoSelect()[0])[0];
+			var edit=tools.$(".edit",whoSelect()[0])[0];
+			var value = edit.value.trim();
+			fileEdit.style.display = "block";
+			fileTitle.style.display = "none";
+			edit.select();  //自动获取光标
+			fileTitle.innerHTML=value;
+		}
+		rename.isRenameFile = true; 
+	})
+	tools.addEvent(document,"mousedown",function(){
+		if(rename.isRenameFile){
+			console.log(rename.isRenameFile)
+			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
+			var fileEdit=tools.$(".file-edit",whoSelect()[0])[0];
+			var edit=tools.$(".edit",whoSelect()[0])[0];
+			var value = edit.value.trim();
+			fileTitle.innerHTML=value;
+			fileEdit.style.display = "none";
+			fileTitle.style.display = "block";
+			rename.isRenameFile = false;
+			if(rename.isRenameFile ==false){
+				var checkBox=tools.$(".checkbox",whoSelect()[0])[0];
+				var fileItem=whoSelect()[0];
+				console.log(fileItem)
+				tools.removeClass(fileItem,"file-checked");
+				tools.removeClass(checkBox,"checked");
+			}
+		}
+	})
+	//删除功能
+	var delFile=tools.$(".delect")[0];
+	tools.addEvent(delFile,"mouseup",function(){
+		if(whoSelect().length==0){
+			tipsFn("warn","请选择要删除的文件");
+		}else{
+			var arr = whoSelect();
+			var fileList=document.getElementsByClassName("file-list")[0];
+			console.log(fileList)
+			for (var i = 0; i < arr.length; i++) {
+				fileList.removeChild(arr[i]);
+//				dealD.removeData(data.files, arr[i].getAttribute('dataid'));
+			};
+//			if (arr.length == 0) {showTip('请选中文件', false); return };
+//			setNavTree();
+//			for (var i = 0; i < this.aTile.length; i++) {
+//				if (this.aTile[i].getAttribute('data') == arr[0].getAttribute('datapid')) {
+//					addTreeNav.call(this.aTile[i]);
+//				}
+//			}
+			
+		}
+	})
+	
+	
 	//封装小提醒
 	var fullTipBox = tools.$(".full-tip-box")[0];
 	var tipText = tools.$(".text",fullTipBox)[0];
@@ -305,7 +324,6 @@
 			fullTipBox.style.top = 0;
 			fullTipBox.style.transition = ".3s";
 			tools.addClass(fullTipBox,cls);
-
 		},0)
 		clearInterval(fullTipBox.timer);
 		fullTipBox.timer = setTimeout(function (){
@@ -317,7 +335,6 @@
 		1. 生成一个框选的div
 		2. 碰撞检测
 	*/
-
 	var newDiv = null;
 	var disX = 0,disY = 0;
 	tools.addEvent(document,"mousedown",function (ev){
@@ -327,7 +344,7 @@
 			return;
 		}
 		disX = ev.clientX;
-		disY = ev.clientY;
+		disY = ev.clientY;		
 		//鼠标移动过程中
 		tools.addEvent(document,"mousemove",moveFn);
 		tools.addEvent(document,"mouseup",upFn);
@@ -379,43 +396,41 @@
 		if(newDiv) newDiv.style.display = "none";
 	}
 	
-	//重命名功能
-	var rename = tools.$(".rename")[0];
-	tools.addEvent(rename,"mouseup",function(){
-		if(whoSelect().length==0){
-			tipsFn("warn","请选择文件");
-		}else if(whoSelect().length>1){
-			tipsFn("err","只能对单个文件进行重命名");
-		}else{
-			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
-			var fileEdit=tools.$(".file-edit",whoSelect()[0])[0];
-			var edit=tools.$(".edit",whoSelect()[0])[0];
-			var value = edit.value.trim();
-			fileEdit.style.display = "block";
-			fileTitle.style.display = "none";
-			edit.select();  //自动获取光标
-			fileTitle.innerHTML=value;
-		}
-		rename.isRenameFile = true; 
-	})
-	tools.addEvent(document,"mousedown",function(){
-		if(rename.isRenameFile){
-			console.log(rename.isRenameFile)
-			var fileTitle = tools.$(".file-title",whoSelect()[0])[0];
-			var fileEdit=tools.$(".file-edit",whoSelect()[0])[0];
-			var edit=tools.$(".edit",whoSelect()[0])[0];
-			var value = edit.value.trim();
-			fileTitle.innerHTML=value;
-			fileEdit.style.display = "none";
-			fileTitle.style.display = "block";
-			rename.isRenameFile = false;
-			if(rename.isRenameFile ==false){
-				var checkBox=tools.$(".checkbox",whoSelect()[0])[0];
-				var fileItem=whoSelect()[0];
-				console.log(fileItem)
-				tools.removeClass(fileItem,"file-checked");		
-				tools.removeClass(checkBox,"checked");
-			}
-		}	
-	})
+	
+
 }())
+
+//			var arr=new Array();
+//			for(var i=0;i<whoSelect().length;i++){
+//				var item = tools.$(".item",whoSelect()[i])[0];
+//				var fileTitle = tools.$(".file-title",whoSelect()[i])[0].innerHTML;
+//				var fileId=Number(item.getAttribute('data-file-id'));
+//				var fileType=item.getAttribute('data-file-type');	
+//				console.log(whoSelect()[0])
+//				var jsonObj = {
+//					id:fileId,
+//					pid:0,
+//					title:fileTitle,
+//					type:fileType
+//				}; 
+//			}	
+
+//			var chi = par.getElementsByTagName('ul');
+//			var self = this;
+//			// console.log(obj)
+//			if (tool.haveClass(this, 'active')) {
+//				this.nextElementSibling.style.display = 'none';
+//				tool.removeClass(this, 'active');
+//			} else if (this.nextElementSibling) {
+//				for (var i = 0; i < chi.length; i++) {
+//					chi[i].style.display = 'none';
+//					tool.removeClass(chi[i].previousElementSibling, 'active')
+//				}
+//				this.nextElementSibling.style.display = 'block';
+//				tool.addClass(this, 'active');
+//			} else {
+//				for (var i = 0; i < chi.length; i++) {
+//					chi[i].style.display = 'none';
+//					tool.removeClass(chi[i].previousElementSibling, 'active')
+//				}
+//			}

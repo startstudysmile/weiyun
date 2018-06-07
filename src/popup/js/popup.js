@@ -22,7 +22,7 @@
 		<div class="dialog">\
 			<p class="dir-file">\
 				<span class="file-img"></span>\
-				<span class="file-name">老王</span>\
+				<span class="file-name">LMD</span>\
 				<span class="total" style="color:#868686;margin:left:12;">3个文件</span>\
 			</p>\
 			<div class="dir-box">\

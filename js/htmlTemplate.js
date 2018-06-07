@@ -8,8 +8,8 @@ function fileConstruct(fileData){
                 </div>
                 <p class="file-title-box">
                     <span class="file-title">${fileData.title}</span>
-                    <span class="file-edtor">
-                        <input class="edtor" value="${fileData.title}" type="text"/>
+                    <span class="file-edit">
+                        <input class="edit" value="${fileData.title}" type="text"/>
                     </span>
                 </p>
             </div>
